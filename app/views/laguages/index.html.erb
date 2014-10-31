@@ -1,0 +1,27 @@
+<h1>Listing laguages</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Version</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @laguages.each do |laguage| %>
+      <tr>
+        <td><%= laguage.name %></td>
+        <td><%= laguage.version %></td>
+        <td><%= link_to 'Show', laguage %></td>
+        <td><%= link_to 'Edit', edit_laguage_path(laguage) %></td>
+        <td><%= link_to 'Destroy', laguage, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Laguage', new_laguage_path %>

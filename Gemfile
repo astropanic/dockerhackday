@@ -38,3 +38,4 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 gem 'bootstrap-generators', '~> 3.2.0'
+gem 'docker-api', :require => 'docker'

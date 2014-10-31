@@ -1,0 +1,26 @@
+<%= form_for(@submission) do |f| %>
+  <% if @submission.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
+
+      <ul>
+      <% @submission.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :code %><br>
+    <%= f.text_area :code, :style => "width: 100%" %>
+  </div>
+  <div class="field">
+    <%= f.label :language_id %><br>
+    <%= f.select :language_id, @submission.available_languages %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit class: "btn" %>
+  </div>
+<% end %>

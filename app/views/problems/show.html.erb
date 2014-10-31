@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <h1><%= @problem.title %></h1>
+</p>
+
+<p>
+  <%= @problem.description %>
+</p>
+
+<p>
+  <strong>Input:</strong>
+  <pre>
+  <%= @problem.input %>
+  </pre>
+</p>
+
+<p>
+  <strong>Output:</strong>
+<pre><%= @problem.output %></pre>
+</p>
+<%= render 'submissions/form' %>
