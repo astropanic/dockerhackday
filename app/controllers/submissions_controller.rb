@@ -12,6 +12,12 @@ class SubmissionsController < ApplicationController
   def show
   end
 
+  def log
+    submission = Submission.find(params[:id])
+    container = Docker::Container.get(submission.container_hash)
+    @out = container.logs(stdout: 1)
+  end
+
   # GET /submissions/new
   def new
     @submission = Submission.new
@@ -28,6 +34,8 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.save
+        @submission.update_attribute(:status, 'pending')
+        @submission.start_in_container!
         format.html { redirect_to @submission, notice: 'Submission was successfully created.' }
         format.json { render :show, status: :created, location: @submission }
       else

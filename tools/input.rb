@@ -1,8 +1,8 @@
-puts 1 - 2
-puts 2 + 4
+puts 5 - 2
+puts 9 + 4
 class Foo
   def self.bar
-    567
+    999
   end
 end
 

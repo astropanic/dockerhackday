@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :laguages
 
-  resources :submissions
+  resources :submissions do
+    member do
+      get 'log'
+    end
+  end
 
   resources :problems
 
