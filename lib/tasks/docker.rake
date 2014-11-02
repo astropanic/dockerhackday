@@ -2,7 +2,7 @@ namespace :docker do
   desc 'my plugins rake task'
   task :run_submission => :environment do
     finished = false
-    @submission = Submission.last
+    @submission = Submission.where(status: 'created').first
     container = Docker::Container.get(@submission.container_hash)
     container.start
     @submission.update_attribute(:status, 'started')
