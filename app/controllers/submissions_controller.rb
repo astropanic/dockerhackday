@@ -34,10 +34,31 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.save
-        @submission.update_attribute(:status, 'pending')
-        @submission.start_in_container!
-        format.html { redirect_to @submission, notice: 'Submission was successfully created.' }
-        format.json { render :show, status: :created, location: @submission }
+        lines = @submission.code.split("\n")
+        args = []
+        lines.each do |line|
+          args << '-e' << line
+        end
+        container = Docker::Container.create({'Cmd' => ['ruby'] + args, 'Image' => 'ruby'})
+        container.commit
+        @submission.update_attribute(:container_hash, container.id)
+        @submission.update_attribute(:status, 'created')
+
+        #######
+        finished = false
+        submission = Submission.last
+        container = Docker::Container.get(submission.container_hash)
+        container.start
+        @submission.update_attribute(:status, 'started')
+        while(!finished) do
+          sleep(5)
+          ids = Docker::Container.all.map &:id
+          finished = !ids.include?(container.id)
+        end
+        @out = container.logs(stdout: 1)
+        ############
+
+        format.html { redirect_to submissions_path, notice: 'Submission was successfully created.' }
       else
         format.html { render :new }
         format.json { render json: @submission.errors, status: :unprocessable_entity }
@@ -77,6 +98,6 @@ class SubmissionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def submission_params
-      params.require(:submission).permit(:code, :user_id)
+      params.require(:submission).permit(:code, :user_id, :problem_id)
     end
 end

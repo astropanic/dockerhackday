@@ -3,6 +3,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Problem ID</th>
       <th>Status</th>
       <th>User</th>
     </tr>
@@ -11,6 +12,7 @@
   <tbody>
     <% @submissions.each do |submission| %>
       <tr>
+        <td><%= submission.problem_id %></td>
         <td><%= submission.status %></td>
         <td><%= submission.user_id %></td>
         <td><%= link_to 'Show', submission %></td>
