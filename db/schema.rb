@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141102125119) do
+ActiveRecord::Schema.define(version: 20141102142434) do
 
   create_table "laguages", force: true do |t|
     t.string   "name"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20141102125119) do
     t.datetime "updated_at"
     t.string   "status"
     t.string   "container_hash"
+    t.text     "result"
   end
 
 end

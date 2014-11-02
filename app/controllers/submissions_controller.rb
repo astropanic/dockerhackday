@@ -13,9 +13,7 @@ class SubmissionsController < ApplicationController
   end
 
   def log
-    submission = Submission.find(params[:id])
-    container = Docker::Container.get(submission.container_hash)
-    @out = container.logs(stdout: 1)
+    @submission = Submission.find(params[:id])
   end
 
   # GET /submissions/new
@@ -43,20 +41,6 @@ class SubmissionsController < ApplicationController
         container.commit
         @submission.update_attribute(:container_hash, container.id)
         @submission.update_attribute(:status, 'created')
-
-        #######
-        finished = false
-        submission = Submission.last
-        container = Docker::Container.get(submission.container_hash)
-        container.start
-        @submission.update_attribute(:status, 'started')
-        while(!finished) do
-          sleep(5)
-          ids = Docker::Container.all.map &:id
-          finished = !ids.include?(container.id)
-        end
-        @out = container.logs(stdout: 1)
-        ############
 
         format.html { redirect_to submissions_path, notice: 'Submission was successfully created.' }
       else
